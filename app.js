@@ -1,14 +1,20 @@
-const apiUrl = "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=tc";
+const forecastApiUrl = "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=tc";
+const currentWeatherApiUrl = "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&lang=tc";
 
 async function fetchWeather() {
-    const response = await fetch(apiUrl);
-    const data = await response.json();
-    displayWeather(data);
+    const forecastResponse = await fetch(forecastApiUrl);
+    const forecastData = await forecastResponse.json();
+    displayForecast(forecastData);
 }
 
-function displayWeather(data) {
+async function fetchCurrentWeather() {
+    const currentWeatherResponse = await fetch(currentWeatherApiUrl);
+    const currentWeatherData = await currentWeatherResponse.json();
+    displayCurrentWeather(currentWeatherData);
+}
+
+function displayForecast(data) {
     const forecastContainer = document.getElementById('forecast');
-    const currentWeatherContainer = document.getElementById('currentWeather');
 
     // Display first 3 forecasts
     data.weatherForecast.slice(0, 3).forEach(forecast => {
@@ -23,12 +29,20 @@ function displayWeather(data) {
         `;
         forecastContainer.appendChild(forecastDiv);
     });
+}
 
-    // Display current weather
+function displayCurrentWeather(data) {
+    const currentWeatherContainer = document.getElementById('currentWeather');
+    
+    // Find 荃灣 information
+    const tsuenWanTemperature = data.temperature.data.find(item => item.place === "荃灣可觀");
+    const tsuenWanHumidity = data.humidity.data.find(item => item.place === "香港天文台");
+
     currentWeatherContainer.innerHTML = `
-        <h2>Current Weather</h2>
-        <p>Temperature: ${data.seaTemp.value}°C</p>
-        <p>Humidity: ${data.seaTemp.value} %</p>
+        <h2>Current Weather - 荃灣</h2>
+        <p>Temperature: ${tsuenWanTemperature ? tsuenWanTemperature.value : 'N/A'}°C</p>
+        <p>Humidity: ${tsuenWanHumidity ? tsuenWanHumidity.value : 'N/A'}%</p>
+        <p>Rainfall: ${data.rainfall.data.find(item => item.place === "荃灣")?.max || 0} mm</p>
     `;
 }
 
@@ -38,4 +52,6 @@ if ('serviceWorker' in navigator) {
         .then(() => console.log('Service Worker Registered'));
 }
 
+// Fetch weather data
 fetchWeather();
+fetchCurrentWeather();
