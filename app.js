@@ -52,6 +52,14 @@ if ('serviceWorker' in navigator) {
         .then(() => console.log('Service Worker Registered'));
 }
 
+// Function to refresh the page
+function refreshPage() {
+    location.reload();
+}
+
 // Fetch weather data
 fetchWeather();
 fetchCurrentWeather();
+
+// Set interval to refresh the page every minute
+setInterval(refreshPage, 60000);
