@@ -12,13 +12,13 @@ async function fetchWeatherForecast() {
     return data;
 }
 
-// Function to display current weather
+// Function to display current weather for Tsuen Wan
 function displayCurrentWeather(data) {
     const currentWeatherContainer = document.getElementById('currentWeather');
-    const temperature = data.humidity; // Example: current temperature
-    const weatherDescription = data.generalSituation; // Example description
-    const windSpeed = data.windSpeed; // Example wind speed
-    const seaTemp = data.seaTemp.value; // Example sea temperature
+    const temperature = data.data.temperature; // Assuming the API returns temperature in this way
+    const weatherDescription = data.generalSituation; // General weather condition
+    const windSpeed = data.data.windSpeed; // Current wind speed
+    const seaTemp = data.seaTemp.value; // Sea temperature
 
     currentWeatherContainer.innerHTML = `
         <div class="weather-icon">🌤️</div> <!-- Placeholder for weather icon -->
@@ -31,9 +31,10 @@ function displayCurrentWeather(data) {
     `;
 }
 
-// Function to display weather forecast
+// Function to display weather forecast for Tsuen Wan
 function displayWeatherForecast(data) {
     const forecastContainer = document.getElementById('forecast');
+    forecastContainer.innerHTML = ''; // Clear previous forecast data
     data.weatherForecast.forEach(item => {
         const forecastItem = document.createElement('div');
         forecastItem.classList.add('forecast-item');
