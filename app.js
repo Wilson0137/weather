@@ -66,7 +66,7 @@ function displayCurrentWeather(data) {
 }
 
 // Function to update and display current time
-function updateCurrentDateTime() {
+async function updateCurrentDateTime() {
     const now = new Date();
     const currentTimeContainer = document.getElementById('currentTime');
     currentTimeContainer.innerHTML = `Current Date and Time: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
@@ -87,6 +87,7 @@ function refreshPage() {
 //fetchWeather();
 fetchCurrentWeather();
 fetchCurrentWeatherDetail();
+updateCurrentDateTime();
 
 setInterval(updateCurrentDateTime, 1000);
 
