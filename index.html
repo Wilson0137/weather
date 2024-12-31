@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Weather App</title>
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap" rel="stylesheet">
-  <link href="site.css" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet">
 </head>
 <body>
 
 <main class="main-container">
 
   <div class="location-and-date">
-    <h1 class="location-and-date__location">London, UK</h1>
-    <div>Sunday 4th August</div>
+    <h1 class="location-and-date__location">TW</h1>
+    <div id="currentTime" class="time-section"></div>
   </div>
 
 
@@ -22,8 +22,8 @@
       <img src="icons/mostly-sunny.svg" class="current-temperature__icon" alt="">
     </div>
     <div class="current-temperature__content-container">
-      <div class="current-temperature__value">21&deg;</div>
-      <div class="current-temperature__summary">Mostly Sunny</div>
+      <div class="current-temperature__value" id="current-temperature_value">21&deg;</div>
+      <div class="current-temperature__summary" id="current-temperature_summary">Mostly Sunny</div>
     </div>
   </div>
 
