@@ -12,11 +12,17 @@ body {
     border-radius: 8px;
     max-width: 600px; /* Limit width for responsiveness */
     margin: auto; /* Center align */
+    display: flex;
+    flex-direction: column; /* Default to column for vertical layout */
+}
+
+#currentWeather {
+    margin-bottom: 20px; /* Add space between sections */
 }
 
 #forecast {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Stack forecast items vertically */
 }
 
 .forecast-item {
@@ -41,12 +47,30 @@ h1 {
     margin-top: 20px;
 }
 
+/* Responsive styles */
 @media (max-width: 600px) {
     body {
         padding: 10px;
     }
-    
+
     #currentTime {
         font-size: 1.2em;
+    }
+}
+
+@media (orientation: landscape) {
+    .container {
+        flex-direction: row; /* Change to row for landscape orientation */
+    }
+
+    #currentWeather {
+        flex: 1; /* Take up equal space */
+        margin-right: 20px; /* Space between sections */
+    }
+
+    #forecast {
+        flex: 1; /* Take up equal space */
+        display: flex;
+        flex-direction: column; /* Stack forecast items vertically */
     }
 }
