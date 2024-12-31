@@ -69,7 +69,8 @@ function displayCurrentWeather(data) {
 async function updateCurrentDateTime() {
     const now = new Date();
     const currentTimeContainer = document.getElementById('currentTime');
-    currentTimeContainer.innerHTML = `Current Date and Time: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
+    //currentTimeContainer.innerHTML = `Current Date and Time: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
+    currentTimeContainer.innerHTML = `AAA`;
 }
 
 // Register service worker for PWA
