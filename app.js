@@ -1,6 +1,5 @@
 const forecastApiUrl = "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=tc";
 const currentWeatherApiUrl = "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&lang=tc";
-const currentWeatherDetailApiUrl="https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=flw&lang=tc"
 
 async function fetchWeather() {
     const forecastResponse = await fetch(forecastApiUrl);
@@ -12,12 +11,6 @@ async function fetchCurrentWeather() {
     const currentWeatherResponse = await fetch(currentWeatherApiUrl);
     const currentWeatherData = await currentWeatherResponse.json();
     displayCurrentWeather(currentWeatherData);
-}
-
-async function fetchCurrentWeatherDetail() {
-    const currentWeatherDetailResponse = await fetch(currentWeatherDetailApiUrl);
-    const currentWeatherDetailData = await currentWeatherDetailResponse.json();
-    displayCurrentWeatherDetail(currentWeatherDetailData);
 }
 
 function displayForecast(data) {
@@ -38,24 +31,12 @@ function displayForecast(data) {
     });
 }
 
-function displayCurrentWeatherDetail(data) {
-    const currentWeatherDetailContainer = document.getElementById('current-temperature_summary');
-    
-    const currentWeatherDetailtext = data.temperature.data.find(item => item.forecastDesc);
-    
-    currentWeatherDetailContainer.innerText = `${currentWeatherDetailtext ? currentWeatherDetailtext.value : 'N/A'}`;
-}
-
 function displayCurrentWeather(data) {
-    const currentWeatherContainer = document.getElementById('currentWeather');
-    const currentTemperatureValueContainer = document.getElementById('current-temperature_value');
     const currentWeatherContainer = document.getElementById('currentWeather');
     
     // Find 荃灣 information
     const tsuenWanTemperature = data.temperature.data.find(item => item.place === "荃灣可觀");
     const tsuenWanHumidity = data.humidity.data.find(item => item.place === "香港天文台");
-
-    currentTemperatureValueContainer.innerText = `<p>Temperature: '${tsuenWanTemperature ? tsuenWanTemperature.value : 'N/A'}°C`;
 
     currentWeatherContainer.innerHTML = `
         <h2>Current Weather - 荃灣</h2>
@@ -66,11 +47,10 @@ function displayCurrentWeather(data) {
 }
 
 // Function to update and display current time
-async function updateCurrentDateTime() {
+function updateCurrentTime() {
     const now = new Date();
     const currentTimeContainer = document.getElementById('currentTime');
-    //currentTimeContainer.innerHTML = `Current Date and Time: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
-    currentTimeContainer.innerHTML = `AAA`;
+    currentTimeContainer.innerHTML = `Current Time: ${now.toLocaleTimeString()}`;
 }
 
 // Register service worker for PWA
@@ -79,18 +59,17 @@ if ('serviceWorker' in navigator) {
         .then(() => console.log('Service Worker Registered'));
 }
 
+// Fetch weather data
+fetchWeather();
+fetchCurrentWeather();
+
 // Function to refresh the page
 function refreshPage() {
     location.reload();
 }
 
-// Fetch weather data
-//fetchWeather();
-fetchCurrentWeather();
-fetchCurrentWeatherDetail();
-updateCurrentDateTime();
-
-setInterval(updateCurrentDateTime, 1000);
-
 // Set interval to refresh the page every minute
 setInterval(refreshPage, 60000);
+
+// Update current time every second
+setInterval(updateCurrentTime, 1000);
