@@ -1,79 +1,64 @@
-const forecastApiUrl = "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=tc";
-const currentWeatherApiUrl = "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&lang=tc";
-
-async function fetchWeather() {
-    const forecastResponse = await fetch(forecastApiUrl);
-    const forecastData = await forecastResponse.json();
-    displayForecast(forecastData);
-}
-
+// Function to fetch current weather data
 async function fetchCurrentWeather() {
-    const currentWeatherResponse = await fetch(currentWeatherApiUrl);
-    const currentWeatherData = await currentWeatherResponse.json();
-    displayCurrentWeather(currentWeatherData);
+    const response = await fetch('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&lang=tc');
+    const data = await response.json();
+    return data;
 }
 
-function displayForecast(data) {
-    const forecastContainer = document.getElementById('forecast');
-
-    // Display first 3 forecasts
-    data.weatherForecast.slice(0, 3).forEach(forecast => {
-        const forecastDiv = document.createElement('div');
-        forecastDiv.classList.add('forecast-item');
-        forecastDiv.innerHTML = `
-            <strong>${forecast.week}</strong><br>
-            最高氣溫: ${forecast.forecastMaxtemp.value}°C<br>
-            最低氣溫: ${forecast.forecastMintemp.value}°C<br>
-            天氣: ${forecast.forecastWeather}<br>
-            風速: ${forecast.forecastWind}
-        `;
-        forecastContainer.appendChild(forecastDiv);
-    });
+// Function to fetch weather forecast data
+async function fetchWeatherForecast() {
+    const response = await fetch('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=tc');
+    const data = await response.json();
+    return data;
 }
 
+// Function to display current weather
 function displayCurrentWeather(data) {
     const currentWeatherContainer = document.getElementById('currentWeather');
-    
-    // Find 荃灣 information
-    const tsuenWanTemperature = data.temperature.data.find(item => item.place === "荃灣可觀");
-    const tsuenWanHumidity = data.humidity.data.find(item => item.place === "香港天文台");
+    const temperature = data.humidity; // Example: current temperature
+    const weatherDescription = data.generalSituation; // Example description
+    const windSpeed = data.windSpeed; // Example wind speed
+    const seaTemp = data.seaTemp.value; // Example sea temperature
 
     currentWeatherContainer.innerHTML = `
-        <h2>Current Weather - 荃灣</h2>
-        <p>Temperature: ${tsuenWanTemperature ? tsuenWanTemperature.value : 'N/A'}°C</p>
-        <p>Humidity: ${tsuenWanHumidity ? tsuenWanHumidity.value : 'N/A'}%</p>
-        <p>Rainfall: ${data.rainfall.data.find(item => item.place === "荃灣")?.max || 0} mm</p>
+        <div class="weather-icon">🌤️</div> <!-- Placeholder for weather icon -->
+        <div class="weather-info">
+            <h2>${temperature}°C</h2>
+            <p>${weatherDescription}</p>
+            <p>Wind: ${windSpeed} km/h</p>
+            <p>Sea Temperature: ${seaTemp}°C</p>
+        </div>
     `;
 }
 
-// Function to update and display current date and time
-function updateCurrentDateTime() {
-    const now = new Date();
-    const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
-    const date = now.toLocaleDateString('zh-HK', options);
-    const time = now.toLocaleTimeString('zh-HK');
-
-    const currentTimeContainer = document.getElementById('currentTime');
-    currentTimeContainer.innerHTML = `Current Date: ${date} <br> Current Time: ${time}`;
+// Function to display weather forecast
+function displayWeatherForecast(data) {
+    const forecastContainer = document.getElementById('forecast');
+    data.weatherForecast.forEach(item => {
+        const forecastItem = document.createElement('div');
+        forecastItem.classList.add('forecast-item');
+        forecastItem.innerHTML = `
+            <h4>${item.week}</h4>
+            <p>${item.forecastWeather}</p>
+            <p>High: ${item.forecastMaxtemp.value}°C</p>
+            <p>Low: ${item.forecastMintemp.value}°C</p>
+        `;
+        forecastContainer.appendChild(forecastItem);
+    });
 }
 
-// Register service worker for PWA
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log('Service Worker Registered'));
+// Main function to fetch and display data
+async function initWeatherApp() {
+    try {
+        const currentWeatherData = await fetchCurrentWeather();
+        displayCurrentWeather(currentWeatherData);
+
+        const weatherForecastData = await fetchWeatherForecast();
+        displayWeatherForecast(weatherForecastData);
+    } catch (error) {
+        console.error('Error fetching weather data:', error);
+    }
 }
 
-// Fetch weather data
-fetchWeather();
-fetchCurrentWeather();
-
-// Function to refresh the page
-function refreshPage() {
-    location.reload();
-}
-
-// Set interval to refresh the page every minute
-setInterval(refreshPage, 60000);
-
-// Update current date and time every second
-setInterval(updateCurrentDateTime, 1000);
+// Initialize the weather app
+initWeatherApp();

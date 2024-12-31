@@ -12,34 +12,65 @@ body {
     border-radius: 8px;
     max-width: 600px; /* Limit width for responsiveness */
     margin: auto; /* Center align */
-    display: flex;
-    flex-direction: column; /* Default to column for vertical layout */
 }
 
-#currentWeather {
-    margin-bottom: 20px; /* Add space between sections */
+.current-weather {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px;
 }
 
-#forecast {
+.weather-icon {
+    font-size: 50px; /* Adjust size for icon */
+    margin-right: 20px; /* Space between icon and text */
+}
+
+.weather-info {
+    flex: 1;
+}
+
+.weather-info h2 {
+    margin: 0;
+    font-size: 36px; /* Adjust size for temperature */
+}
+
+.forecast {
     display: flex;
-    flex-direction: column; /* Stack forecast items vertically */
+    justify-content: space-between;
+    margin-bottom: 20px;
 }
 
 .forecast-item {
-    margin-bottom: 15px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-h1 {
     text-align: center;
+    flex: 1; /* Equal space for each item */
+    padding: 10px;
 }
 
-#currentTime {
+.forecast-item h4 {
+    margin: 0;
+}
+
+.time-section {
     text-align: center;
     font-size: 1.5em;
     margin: 20px 0;
+}
+
+.five-day-forecast {
+    display: flex;
+    justify-content: space-between;
+}
+
+.five-day-forecast .day-item {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 5px;
 }
 
 #footer {
@@ -53,24 +84,12 @@ h1 {
         padding: 10px;
     }
 
-    #currentTime {
-        font-size: 1.2em;
-    }
-}
-
-@media (orientation: landscape) {
-    .container {
-        flex-direction: row; /* Change to row for landscape orientation */
-    }
-
     #currentWeather {
-        flex: 1; /* Take up equal space */
-        margin-right: 20px; /* Space between sections */
+        flex-direction: column; /* Stack icon and info in mobile view */
+        align-items: flex-start; /* Align items to start */
     }
 
-    #forecast {
-        flex: 1; /* Take up equal space */
-        display: flex;
-        flex-direction: column; /* Stack forecast items vertically */
+    .weather-icon {
+        margin-bottom: 10px; /* Space below icon in mobile view */
     }
 }
