@@ -12,26 +12,31 @@ async function fetchWeatherForecast() {
     return data;
 }
 
-// Function to display current weather for Tsuen Wan
+// Function to display current weather for 荃灣
 function displayCurrentWeather(data) {
     const currentWeatherContainer = document.getElementById('currentWeather');
-    const temperature = data.data.temperature; // Assuming the API returns temperature in this way
-    const weatherDescription = data.generalSituation; // General weather condition
-    const windSpeed = data.data.windSpeed; // Current wind speed
-    const seaTemp = data.seaTemp.value; // Sea temperature
+    
+    // Find Tsuen Wan temperature
+    const tsuenWanTemperature = data.temperature.data.find(item => item.place === '荃灣可觀') || {};
+    const temperature = tsuenWanTemperature.value || "N/A";
+    
+    // General weather condition
+    const weatherDescription = data.warningMessage.join(', ') || "No weather warnings.";
+    const humidity = data.humidity.data[0].value || "N/A"; // Assuming there's at least one entry
+    const windSpeed = data.rainfall.data.find(item => item.place === '荃灣')?.max || 0; // Placeholder for wind speed
 
     currentWeatherContainer.innerHTML = `
         <div class="weather-icon">🌤️</div> <!-- Placeholder for weather icon -->
         <div class="weather-info">
             <h2>${temperature}°C</h2>
             <p>${weatherDescription}</p>
-            <p>Wind: ${windSpeed} km/h</p>
-            <p>Sea Temperature: ${seaTemp}°C</p>
+            <p>Humidity: ${humidity}%</p>
+            <p>Wind Speed (max rainfall): ${windSpeed} mm</p>
         </div>
     `;
 }
 
-// Function to display weather forecast for Tsuen Wan
+// Function to display weather forecast
 function displayWeatherForecast(data) {
     const forecastContainer = document.getElementById('forecast');
     forecastContainer.innerHTML = ''; // Clear previous forecast data
