@@ -47,6 +47,22 @@ function displayWeatherForecast(data) {
     });
 }
 
+// Function to update the current date and time
+function updateDateTime() {
+    const now = new Date();
+    const options = {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false,
+    };
+    const formattedDate = now.toLocaleString('zh-HK', options);
+    document.getElementById('currentTime').textContent = formattedDate;
+}
+
 // Main function to fetch and display data
 async function initWeatherApp() {
     try {
@@ -60,5 +76,6 @@ async function initWeatherApp() {
     }
 }
 
-// Initialize the weather app
+// Initialize the weather app and start updating time
 initWeatherApp();
+setInterval(updateDateTime, 1000); // Update date and time every second
