@@ -70,7 +70,7 @@ async function updateCurrentDateTime() {
     const now = new Date();
     const currentTimeContainer = document.getElementById('currentTime');
     //currentTimeContainer.innerHTML = `Current Date and Time: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
-    currentTimeContainer.innerText = `AAA`;
+    currentTimeContainer.innerHTML = `AAA`;
 }
 
 // Register service worker for PWA
