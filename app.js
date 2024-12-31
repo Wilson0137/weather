@@ -46,11 +46,15 @@ function displayCurrentWeather(data) {
     `;
 }
 
-// Function to update and display current time
-function updateCurrentTime() {
+// Function to update and display current date and time
+function updateCurrentDateTime() {
     const now = new Date();
+    const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+    const date = now.toLocaleDateString('zh-HK', options);
+    const time = now.toLocaleTimeString('zh-HK');
+
     const currentTimeContainer = document.getElementById('currentTime');
-    currentTimeContainer.innerHTML = `Current Time: ${now.toLocaleTimeString()}`;
+    currentTimeContainer.innerHTML = `Current Date: ${date} <br> Current Time: ${time}`;
 }
 
 // Register service worker for PWA
@@ -71,5 +75,5 @@ function refreshPage() {
 // Set interval to refresh the page every minute
 setInterval(refreshPage, 60000);
 
-// Update current time every second
-setInterval(updateCurrentTime, 1000);
+// Update current date and time every second
+setInterval(updateCurrentDateTime, 1000);
